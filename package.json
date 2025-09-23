@@ -1,0 +1,15 @@
+{
+  "name": "car-rental-api",
+  "version": "1.0.0",
+  "description": "��#\u0000 \u0000B\u0000i\u0000l\u0000u\u0000t\u0000h\u0000y\u0000r\u0000n\u0000i\u0000n\u0000g\u0000 \u0000A\u0000P\u0000I\u0000\r\u0000 \u0000",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^5.1.0"
+  }
+}
