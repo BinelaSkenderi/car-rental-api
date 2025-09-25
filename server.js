@@ -1,34 +1,26 @@
 import express from 'express';
-import { getConnection } from './config/database.js';
+import carRouter from './routes/carRoutes.js'; // importera din routerfil
 
 const app = express();
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
 
-// Enkel route för att testa servern
+// Middleware om du behöver
+app.use(express.json());
+
+// Koppla router
+app.use('/api/cars', carRouter);
+
+// Root endpoint
 app.get('/', (req, res) => {
-  res.send('Server is running!');
+  res.send('Welcome to the Car Rental API!');
 });
 
-// Enkel route för att testa databasen
-app.get('/db-test', async (req, res) => {
-  try {
-    const db = await getConnection();
-    const [rows] = await db.execute('SELECT NOW() AS now');
-    res.json({ status: 'ok', time: rows[0].now });
-  } catch (error) {
-    console.error('DB error:', error.message);
-    res.status(500).json({ error: 'Database connection failed' });
-  }
+// Enkel felhanterare (fångar throw eller next(error))
+app.use((err, req, res, next) => {
+  console.error(err);
+  res.status(500).json({ error: 'Something went wrong' });
 });
 
-app.listen(PORT, async () => {
-  console.log(`🚀 Server running on http://localhost:${PORT}`);
-  // testa anslutningen direkt vid start
-  try {
-    const db = await getConnection();
-    const [rows] = await db.execute('SELECT NOW() AS now');
-    console.log('DB time:', rows[0].now);
-  } catch (err) {
-    console.error('DB connection failed:', err.message);
-  }
+app.listen(PORT, () => {
+  console.log(`🚗 Server running on http://localhost:${PORT}`);
 });
