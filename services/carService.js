@@ -1,10 +1,10 @@
 import * as carData from '../data/carData.js';
 
-export const getAllCars = async () => {
-  const cars = await carData.findAll();
+export const getAllCars = async (q = {}) => {
+  const cars = await carData.findAll(q);
   return cars.map(c => ({
     ...c,
-    prisPerDag: c.prisPerDag != null ? Number(c.prisPerDag) : null,
+    prisPerDag: Number(c.prisPerDag),
     displayName: `${c.marke ?? ''} ${c.modell ?? ''}`.trim(),
   }));
 };
@@ -14,7 +14,7 @@ export const getCarById = async id => {
   if (!c) return null;
   return {
     ...c,
-    prisPerDag: c.prisPerDag != null ? Number(c.prisPerDag) : null,
+    prisPerDag: Number(c.prisPerDag),
     displayName: `${c.marke ?? ''} ${c.modell ?? ''}`.trim(),
   };
 };
