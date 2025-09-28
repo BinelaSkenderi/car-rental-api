@@ -15,7 +15,7 @@ SET FOREIGN_KEY_CHECKS=1;
 CREATE TABLE bilar (
   id INT AUTO_INCREMENT PRIMARY KEY,
   regnr VARCHAR(10) NOT NULL UNIQUE,
-  `märke` VARCHAR(50) NULL,
+  `marke` VARCHAR(50) NULL,
   modell VARCHAR(50) NULL,
   pris_per_dag DECIMAL(10,2) NULL
 ) ENGINE=InnoDB;
@@ -51,7 +51,7 @@ INSERT INTO kunder (fnamn, enamn, personnummer, telefon) VALUES
 ('Stefan','Ekengren',  '041030-4545', '0724545675');
 
 -- === bilar ===
-INSERT INTO bilar (regnr, `märke`, modell, pris_per_dag) VALUES
+INSERT INTO bilar (regnr, `marke`, modell, pris_per_dag) VALUES
 ('ABC123', 'Volvo',      'XC60',     599.00),
 ('XYZ789', 'BMW',        '320i',     799.00),
 ('JKL456', 'Tesla',      'Model 3',  999.00),
