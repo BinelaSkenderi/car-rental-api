@@ -1,4 +1,4 @@
-// config/database.js
+//config/database.js
 import 'dotenv/config';
 import mysql from 'mysql2/promise';
 
