@@ -1,18 +1,30 @@
 import { getConnection } from '../config/database.js';
 
-export const findALL = async () => {
+export const create = async ({ fnamn, enamn, personnummer, telefon }) => {
   const db = await getConnection();
-  const [rows] = await db.execute(
-    'SELECT id, fnamn, enamn, personnummer, telefon FROM kunder ORDER BY id'
+  const [result] = await db.execute(
+    `INSERT INTO kunder (fnamn, enamn, personnummer, telefon)
+     VALUES (?, ?, ?, ?)`,
+    [fnamn, enamn, personnummer ?? null, telefon ?? null]
   );
-  return rows;
+  return { id: result.insertId };
 };
 
-export const findById = async id => {
+export const update = async (id, { fnamn, enamn, personnummer, telefon }) => {
   const db = await getConnection();
-  const [rows] = await db.execute(
-    'SELECT id, fnamn, enamn, personnummer, telefon FROM kunder WHERE id = ?',
-    [Number(id)]
+  const [result] = await db.execute(
+    `UPDATE kunder
+       SET fnamn = ?, enamn = ?, personnummer = ?, telefon = ?
+     WHERE id = ?`,
+    [fnamn, enamn, personnummer ?? null, telefon ?? null, Number(id)]
   );
-  return rows[0] || null;
+  return result.affectedRows;
+};
+
+export const remove = async id => {
+  const db = await getConnection();
+  const [result] = await db.execute(`DELETE FROM kunder WHERE id = ?`, [
+    Number(id),
+  ]);
+  return result.affectedRows;
 };

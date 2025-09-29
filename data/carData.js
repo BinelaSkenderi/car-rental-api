@@ -16,7 +16,6 @@ export const findAll = async (filters = {}) => {
   `;
   const params = [];
 
-  // Prisintervall
   if (filters.minPris != null && filters.minPris !== '') {
     sql += ' AND pris_per_dag >= ?';
     params.push(Number(filters.minPris));
@@ -25,8 +24,6 @@ export const findAll = async (filters = {}) => {
     sql += ' AND pris_per_dag <= ?';
     params.push(Number(filters.maxPris));
   }
-
-  // Exakta filter (case-sensitive beroende på collation)
   if (filters.marke) {
     sql += ' AND marke = ?';
     params.push(filters.marke);
@@ -35,8 +32,6 @@ export const findAll = async (filters = {}) => {
     sql += ' AND modell = ?';
     params.push(filters.modell);
   }
-
-  // (Valfritt) enkel text-sökning i märke/modell
   if (filters.q) {
     sql += ' AND (marke LIKE ? OR modell LIKE ?)';
     const like = `%${filters.q}%`;
