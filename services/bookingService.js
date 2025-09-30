@@ -1,21 +1,19 @@
-// services/bookingService.js
 import * as repo from '../data/bookingData.js';
 
-// Hjälp: ISO → "YYYY-MM-DD"
 const toYMD = iso => (iso ? new Date(iso).toISOString().slice(0, 10) : null);
-
-// ⬇️ Named export (måste finnas, routes importerar { getAllBookings })
-export const getAllBookings = async (q = {}) => {
-  const rows = await repo.findAll(q);
-  return rows.map(r => ({
+const norm = r =>
+  r && {
     ...r,
     totalPris: r.totalPris != null ? Number(r.totalPris) : null,
     startDatum: toYMD(r.startDatum),
     slutDatum: toYMD(r.slutDatum),
-  }));
+  };
+
+export const getAllBookings = async (q = {}) => {
+  const rows = await repo.findAll(q);
+  return rows.map(norm);
 };
 
-// Om du lade till CRUD tidigare, exportera dem också som named exports:
 export const createBooking = async payload => {
   const { carId, customerId, startDatum, slutDatum, totalPris } = payload;
 
@@ -31,8 +29,6 @@ export const createBooking = async payload => {
     err.status = 400;
     throw err;
   }
-
-  // kolla överlapp
   const overlap = await repo.hasOverlap({
     carId,
     from: startDatum,
@@ -52,14 +48,7 @@ export const createBooking = async payload => {
     totalPris,
   });
   const row = await repo.findById(id);
-  return row
-    ? {
-        ...row,
-        totalPris: Number(row.totalPris),
-        startDatum: toYMD(row.startDatum),
-        slutDatum: toYMD(row.slutDatum),
-      }
-    : null;
+  return norm(row);
 };
 
 export const updateBooking = async (id, payload) => {
@@ -77,7 +66,6 @@ export const updateBooking = async (id, payload) => {
     err.status = 400;
     throw err;
   }
-
   const overlap = await repo.hasOverlap({
     carId,
     from: startDatum,
@@ -98,16 +86,8 @@ export const updateBooking = async (id, payload) => {
     totalPris,
   });
   if (!changed) return null;
-
   const row = await repo.findById(id);
-  return row
-    ? {
-        ...row,
-        totalPris: Number(row.totalPris),
-        startDatum: toYMD(row.startDatum),
-        slutDatum: toYMD(row.slutDatum),
-      }
-    : null;
+  return norm(row);
 };
 
 export const deleteBooking = async id => {

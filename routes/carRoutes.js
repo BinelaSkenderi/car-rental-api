@@ -2,11 +2,10 @@ import express from 'express';
 import * as carService from '../services/carService.js';
 
 const router = express.Router();
-
 const isInt = n => Number.isInteger(Number(n));
 const isISO = s => /^\d{4}-\d{2}-\d{2}$/.test(s);
 
-// GET /api/cars  (stöd för filter om du skickar ?minPris=...&maxPris=...&marke=...&modell=...&ledigaFran=YYYY-MM-DD&ledigaTill=YYYY-MM-DD)
+// GET /api/cars
 router.get('/', async (req, res) => {
   try {
     const { ledigaFran, ledigaTill } = req.query;
@@ -33,10 +32,8 @@ router.get('/:id', async (req, res) => {
     const id = Number(req.params.id);
     if (!isInt(id))
       return res.status(400).json({ error: 'id måste vara heltal' });
-
     const car = await carService.getCarById(id);
     if (!car) return res.status(404).json({ error: 'Car not found' });
-
     res.json(car);
   } catch (e) {
     console.error(`GET /api/cars/${req.params.id} error:`, e);

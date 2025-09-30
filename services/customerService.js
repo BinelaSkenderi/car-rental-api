@@ -1,5 +1,8 @@
 import * as repo from '../data/customerData.js';
 
+export const getAllCustomers = () => repo.findAll();
+export const getCustomerById = id => repo.findById(id);
+
 export const createCustomer = async payload => {
   const { id } = await repo.create(payload);
   return repo.findById(id);
