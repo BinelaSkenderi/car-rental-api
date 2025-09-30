@@ -5,6 +5,7 @@ import {
   getAvailableCount,
 } from '../services/statsService.js';
 
+// en miniatyr-app som hanterar routes
 const router = express.Router();
 const isISO = s => /^\d{4}-\d{2}-\d{2}$/.test(s);
 const isYear = s => /^\d{4}$/.test(s);
@@ -22,6 +23,7 @@ router.get('/bokningar-per-manad', async (req, res) => {
   }
 });
 
+// Endpoint: GET /snitt-pris-per-dag
 router.get('/snitt-pris-per-dag', async (_req, res) => {
   try {
     const data = await getAvgPricePerDay();
